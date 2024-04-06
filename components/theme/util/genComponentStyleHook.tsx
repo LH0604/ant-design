@@ -126,7 +126,14 @@ const getCompVarPrefix = (component: string, prefix?: string) =>
   ]
     .filter(Boolean)
     .join('-')}`;
-
+/**
+ * genComponentStyleHook的作用是封装样式生成函数，生成组件样式
+ * @param componentName
+ * @param styleFn
+ * @param getDefaultToken
+ * @param options
+ * @returns
+ */
 export default function genComponentStyleHook<C extends OverrideComponent>(
   componentName: C | [C, string],
   styleFn: GenStyleFn<C>,
@@ -408,8 +415,14 @@ export const genStyleHooks = <C extends OverrideComponent>(
     getDefaultToken,
     options,
   );
-
+  /**
+   * @param prefixCls 类名前缀
+   * @param rootCls 默认是等于prefixCls
+   */
   return (prefixCls: string, rootCls: string = prefixCls) => {
+    /**
+     * hashId是样式的hash值，用于解决样式冲突问题
+     */
     const [, hashId] = useStyle(prefixCls, rootCls);
     const [wrapCSSVar, cssVarCls] = useCSSVar(rootCls);
 

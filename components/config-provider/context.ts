@@ -261,7 +261,12 @@ export interface ConfigConsumerProps {
   wave?: WaveConfig;
   warning?: WarningContextProps;
 }
-
+/**
+ * 获取类名前缀，如果有用户自定义的类名前缀则使用用户自定义的
+ * @param suffixCls 前缀是否增加字段
+ * @param customizePrefixCls 用户自定义的类名前缀
+ * @returns 返回一个类名前缀
+ */
 const defaultGetPrefixCls = (suffixCls?: string, customizePrefixCls?: string) => {
   if (customizePrefixCls) {
     return customizePrefixCls;

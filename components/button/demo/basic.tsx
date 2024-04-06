@@ -7,7 +7,10 @@ const App: React.FC = () => (
     <Button>Default Button</Button>
     <Button type="dashed">Dashed Button</Button>
     <Button type="text">Text Button</Button>
-    <Button type="link">Link Button</Button>
+    <Button type="link" htmlType="reset">
+      Link Button
+    </Button>
+    {/* <button ></button> */}
   </Flex>
 );
 

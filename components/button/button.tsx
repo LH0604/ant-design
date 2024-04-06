@@ -1,4 +1,7 @@
 /* eslint-disable react/button-has-type */
+import classNames from 'classnames';
+import omit from 'rc-util/lib/omit';
+import { composeRef } from 'rc-util/lib/ref';
 import React, {
   Children,
   createRef,
@@ -8,9 +11,6 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import classNames from 'classnames';
-import omit from 'rc-util/lib/omit';
-import { composeRef } from 'rc-util/lib/ref';
 
 import { devUseWarning } from '../_util/warning';
 import Wave from '../_util/wave';
@@ -89,6 +89,8 @@ function getLoadingConfig(loading: BaseButtonProps['loading']): LoadingConfigTyp
   };
 }
 
+//按钮的高阶组件
+/* 按钮实际的组件地址 */
 const InternalButton: React.ForwardRefRenderFunction<
   HTMLButtonElement | HTMLAnchorElement,
   ButtonProps
@@ -96,9 +98,9 @@ const InternalButton: React.ForwardRefRenderFunction<
   const {
     loading = false,
     prefixCls: customizePrefixCls,
-    type,
-    danger,
-    shape = 'default',
+    type, // 设置按钮类型
+    danger, // 设置危险按钮
+    shape = 'default', // 设置按钮形状
     size: customizeSize,
     styles,
     disabled: customDisabled,
@@ -117,12 +119,26 @@ const InternalButton: React.ForwardRefRenderFunction<
 
   // https://github.com/ant-design/ant-design/issues/47605
   // Compatible with original `type` behavior
+  /**
+   * 如果按钮类型为空则默认为default
+   */
   const mergedType = type || 'default';
 
   const { getPrefixCls, autoInsertSpaceInButton, direction, button } = useContext(ConfigContext);
+  /**
+   * 前缀类名
+   * 如果用户自定义了类型前缀则使用自定义的
+   * 否则使用模式的类型前缀 ant-btn
+   */
   const prefixCls = getPrefixCls('btn', customizePrefixCls);
-
+  /**
+   * hashId是样式变量的hash值
+   * cssVarCls是样式变量的类名
+   * wrapCSSVar
+   */
   const [wrapCSSVar, hashId, cssVarCls] = useStyle(prefixCls);
+  console.log(hashId, 'hashId');
+  console.log(cssVarCls, 'cssVarCls');
 
   const disabled = useContext(DisabledContext);
   const mergedDisabled = customDisabled ?? disabled;
@@ -136,7 +152,7 @@ const InternalButton: React.ForwardRefRenderFunction<
   const [hasTwoCNChar, setHasTwoCNChar] = useState<boolean>(false);
 
   const internalRef = createRef<HTMLButtonElement | HTMLAnchorElement>();
-
+  /* 处理转发过来的ref */
   const buttonRef = composeRef(ref, internalRef);
 
   const needInserted =
@@ -298,15 +314,17 @@ const InternalButton: React.ForwardRefRenderFunction<
 
   if (!isUnBorderedButtonType(mergedType)) {
     buttonNode = (
+      // 提供水波纹效果
       <Wave component="Button" disabled={!!innerLoading}>
         {buttonNode}
       </Wave>
     );
   }
-
+  // wrapCSSVar的作用是添加css变量
   return wrapCSSVar(buttonNode);
 };
 
+/* ref的转发 */
 const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
   InternalButton,
 ) as CompoundedComponent;
