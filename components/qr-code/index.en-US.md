@@ -1,6 +1,7 @@
 ---
 category: Components
 title: QRCode
+description: Components that can convert text into QR codes, and support custom color and logo.
 cover: https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*cJopQrf0ncwAAAAAAAAAAAAADrJ8AQ/original
 coverDark: https://mdn.alipayobjects.com/huamei_7uahnr/afts/img/A*M4PBTZ_n9OgAAAAAAAAAAAAADrJ8AQ/original
 demo:
@@ -8,10 +9,8 @@ demo:
 group:
   title: Data Display
   order: 5
-tag: New
+tag: 5.1.0
 ---
-
-Components that can convert text into QR codes, and support custom color and logo. Available since `antd@5.1.0`.
 
 <!-- prettier-ignore -->
 :::info
