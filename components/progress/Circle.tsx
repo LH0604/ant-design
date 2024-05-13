@@ -1,7 +1,8 @@
+import * as React from 'react';
 import classNames from 'classnames';
 import type { ProgressProps as RcProgressProps } from 'rc-progress';
 import { Circle as RCCircle } from 'rc-progress';
-import * as React from 'react';
+
 import Tooltip from '../tooltip';
 import type { ProgressGradient, ProgressProps } from './progress';
 import { getPercentage, getSize, getStrokeColor } from './utils';
@@ -81,9 +82,7 @@ const Circle: React.FC<CircleProps> = (props) => {
   return (
     <div className={wrapperClassName} style={circleStyle}>
       {width <= 20 ? (
-        <Tooltip title={children}>
-          <span>{circleContent}</span>
-        </Tooltip>
+        <Tooltip title={children}>{circleContent}</Tooltip>
       ) : (
         <>
           {circleContent}

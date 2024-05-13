@@ -78,4 +78,28 @@ describe('Typography.Editable', () => {
 
     unmount();
   });
+
+  it('dynamic set editable', () => {
+    const { container, rerender } = render(<Base component="p">test</Base>);
+    expect(container.querySelector('.ant-typography-edit')).toBeFalsy();
+
+    rerender(
+      <Base component="p" editable>
+        test
+      </Base>,
+    );
+    expect(container.querySelector('.ant-typography-edit')).toBeTruthy();
+  });
+
+  it('tabIndex of edit button', () => {
+    const { container, rerender } = render(<Base component="p">test</Base>);
+    expect(container.querySelector('.ant-typography-edit')).toBeFalsy();
+
+    rerender(
+      <Base component="p" editable={{ tabIndex: -1 }}>
+        test
+      </Base>,
+    );
+    expect(container.querySelector('.ant-typography-edit')?.getAttribute('tabIndex')).toBe('-1');
+  });
 });

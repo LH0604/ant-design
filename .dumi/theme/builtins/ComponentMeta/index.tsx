@@ -1,6 +1,7 @@
 import React from 'react';
 import { EditOutlined, GithubOutlined } from '@ant-design/icons';
-import { Descriptions, theme, Tooltip, Typography, type GetProp } from 'antd';
+import type { GetProp } from 'antd';
+import { Descriptions, theme, Tooltip, Typography } from 'antd';
 import { createStyles, css } from 'antd-style';
 import kebabCase from 'lodash/kebabCase';
 import CopyToClipboard from 'react-copy-to-clipboard';
@@ -40,9 +41,9 @@ const useStyle = createStyles(({ token }) => ({
     position: relative;
     display: inline-flex;
     align-items: center;
-    column-gap: 4px;
-    border-radius: 4px;
-    padding-inline: ${token.paddingXS}px;
+    column-gap: ${token.paddingXXS}px;
+    border-radius: ${token.borderRadiusSM}px;
+    padding-inline: ${token.paddingXXS}px;
     transition: all ${token.motionDurationSlow} !important;
     font-family: ${token.codeFamily};
     color: ${token.colorTextSecondary} !important;
@@ -61,6 +62,7 @@ const useStyle = createStyles(({ token }) => ({
   `,
   from: css`
     color: ${token.magenta8};
+    margin-inline-end: 0.5em;
   `,
   antd: css`
     color: ${token.green8};
@@ -143,19 +145,17 @@ const ComponentMeta: React.FC<ComponentMetaProps> = (props) => {
           {
             label: locale.import,
             children: (
-              <Tooltip
-                placement="right"
-                title={copied ? locale.copied : locale.copy}
-                onOpenChange={onOpenChange}
-              >
-                <span>
-                  <CopyToClipboard text={`import { ${component} } from "antd";`} onCopy={onCopy}>
-                    <Typography.Text className={styles.code} onClick={onCopy}>
-                      {importList}
-                    </Typography.Text>
-                  </CopyToClipboard>
-                </span>
-              </Tooltip>
+              <CopyToClipboard text={`import { ${component} } from "antd";`} onCopy={onCopy}>
+                <Tooltip
+                  placement="right"
+                  title={copied ? locale.copied : locale.copy}
+                  onOpenChange={onOpenChange}
+                >
+                  <Typography.Text className={styles.code} onClick={onCopy}>
+                    {importList}
+                  </Typography.Text>
+                </Tooltip>
+              </CopyToClipboard>
             ),
           },
           filledSource && {

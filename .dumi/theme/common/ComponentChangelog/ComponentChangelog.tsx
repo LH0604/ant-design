@@ -31,7 +31,7 @@ const useStyle = createStyles(({ token, css }) => ({
   history: css`
     position: absolute;
     top: 0;
-    inset-inline-end: 0;
+    inset-inline-end: ${token.marginXS}px;
   `,
 
   li: css`
@@ -42,7 +42,7 @@ const useStyle = createStyles(({ token, css }) => ({
     margin-inline-start: ${token.marginXS}px;
   `,
   bug: css`
-    font-size: 14px;
+    font-size: ${token.fontSize}px;
     color: #aaa;
     margin-inline-start: ${token.marginXS}px;
     display: inline-block;

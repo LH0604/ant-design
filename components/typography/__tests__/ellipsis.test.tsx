@@ -1,8 +1,14 @@
 import React from 'react';
 import { spyElementPrototypes } from 'rc-util/lib/test/domHook';
-import { act } from 'react-dom/test-utils';
 
-import { fireEvent, render, triggerResize, waitFakeTimer, waitFor } from '../../../tests/utils';
+import {
+  act,
+  fireEvent,
+  render,
+  triggerResize,
+  waitFakeTimer,
+  waitFor,
+} from '../../../tests/utils';
 import type { EllipsisConfig } from '../Base';
 import Base from '../Base';
 
@@ -506,5 +512,19 @@ describe('Typography.Ellipsis', () => {
     fireEvent.mouseEnter(ref.current!);
     await waitFakeTimer();
     expect(document.querySelector('.ant-tooltip')).toBeTruthy();
+  });
+
+  it('not force single line if expanded', () => {
+    const renderDemo = (expanded: boolean) => (
+      <Base ellipsis={{ rows: 1, expanded, expandable: 'collapsible' }} component="p">
+        {fullStr}
+      </Base>
+    );
+
+    const { container, rerender } = render(renderDemo(false));
+    expect(container.querySelector('.ant-typography-single-line')).toBeTruthy();
+
+    rerender(renderDemo(true));
+    expect(container.querySelector('.ant-typography-single-line')).toBeFalsy();
   });
 });

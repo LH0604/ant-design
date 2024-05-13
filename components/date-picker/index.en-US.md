@@ -29,7 +29,7 @@ By clicking the input box, you can select a date from a popup calendar.
 <code src="./demo/disabled.tsx">Disabled</code>
 <code src="./demo/disabled-date.tsx">Disabled Date & Time</code>
 <code src="./demo/allow-empty.tsx">Allow Empty</code>
-<code src="./demo/select-in-range.tsx">Select range dates in 7 days</code>
+<code src="./demo/select-in-range.tsx">Select range dates</code>
 <code src="./demo/preset-ranges.tsx">Preset Ranges</code>
 <code src="./demo/extra-footer.tsx">Extra Footer</code>
 <code src="./demo/size.tsx">Three Sizes</code>
@@ -212,7 +212,7 @@ Added in `4.1.0`.
 | defaultPickerValue | Default panel date, will be reset when panel open | [dayjs](https://day.js.org/) | - | 5.14.0 |
 | defaultValue | To set default date | \[[dayjs](https://day.js.org/), [dayjs](https://day.js.org/)] | - |  |
 | disabled | If disable start or end | \[boolean, boolean] | - |  |
-| disabledTime | To specify the time that cannot be selected | function(date: dayjs, partial: `start` \| `end`) | - |  |
+| disabledTime | To specify the time that cannot be selected | function(date: dayjs, partial: `start` \| `end`, info: { from?: dayjs }) | - | `info.from`: 5.17.0 |
 | format | To set the date format. refer to [dayjs#format](https://day.js.org/docs/en/display/format) | [formatType](#formattype) | `YYYY-MM-DD HH:mm:ss` |  |
 | id | Config input ids | { start?: string, end?: string } | - | 5.14.0 |
 | pickerValue | Panel date. Used for controlled switching of panel date. Work with `onPanelChange` | [dayjs](https://day.js.org/) | - | 5.14.0 |

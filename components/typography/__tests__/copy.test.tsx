@@ -298,4 +298,58 @@ describe('Typography copy', () => {
       expect(result.current?.copyLoading).toBe(false);
     });
   });
+
+  it('not block copy text change', () => {
+    const spy = jest.spyOn(copyObj, 'default');
+
+    const renderDemo = (text: string) => (
+      <Base copyable={{ text }} component="p">
+        Text
+      </Base>
+    );
+
+    const { container, rerender } = render(renderDemo('Bamboo'));
+    rerender(renderDemo('Light'));
+
+    fireEvent.click(container.querySelector('.ant-typography-copy')!);
+    expect(spy.mock.calls[0][0]).toBe('Light');
+
+    spy.mockRestore();
+  });
+
+  it('dynamic set editable', () => {
+    const { container, rerender } = render(<Base component="p">test</Base>);
+    expect(container.querySelector('.ant-typography-copy')).toBeFalsy();
+
+    rerender(
+      <Base component="p" copyable>
+        test
+      </Base>,
+    );
+    expect(container.querySelector('.ant-typography-copy')).toBeTruthy();
+  });
+
+  it('tabIndex of copy button', () => {
+    const { container } = render(
+      <Base component="p" copyable={{ tabIndex: -1 }}>
+        test
+      </Base>,
+    );
+    expect(container.querySelector('.ant-typography-copy')?.getAttribute('tabIndex')).toBe('-1');
+  });
+
+  it('locale text for button tooltip', async () => {
+    const { container } = render(
+      <Base component="p" copyable>
+        test
+      </Base>,
+    );
+    fireEvent.mouseEnter(container.querySelectorAll('.ant-typography-copy')[0]);
+    await waitFakeTimer();
+    await waitFor(() => {
+      expect(container.querySelector('.ant-tooltip-inner')?.textContent).toBe('Copy');
+    });
+    fireEvent.click(container.querySelectorAll('.ant-typography-copy')[0]);
+    expect(container.querySelector('.ant-tooltip-inner')?.textContent).toBe('Copied');
+  });
 });

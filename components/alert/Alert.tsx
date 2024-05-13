@@ -7,13 +7,18 @@ import ExclamationCircleFilled from '@ant-design/icons/ExclamationCircleFilled';
 import InfoCircleFilled from '@ant-design/icons/InfoCircleFilled';
 import classNames from 'classnames';
 import CSSMotion from 'rc-motion';
+import { composeRef } from 'rc-util/es/ref';
 import pickAttrs from 'rc-util/lib/pickAttrs';
 
+import type { ClosableType } from '../_util/hooks/useClosable';
 import { replaceElement } from '../_util/reactNode';
 import { devUseWarning } from '../_util/warning';
 import { ConfigContext } from '../config-provider';
 import useStyle from './style';
-import type { ClosableType } from '../_util/hooks/useClosable';
+
+export interface AlertRef {
+  nativeElement: HTMLDivElement;
+}
 
 export interface AlertProps {
   /** Type of Alert styles, options:`success`, `info`, `warning`, `error` */
@@ -48,6 +53,8 @@ export interface AlertProps {
   onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
   onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
+
+  id?: string;
 }
 
 const iconMapFilled = {
@@ -102,7 +109,7 @@ const CloseIconNode: React.FC<CloseIconProps> = (props) => {
   ) : null;
 };
 
-const Alert: React.FC<AlertProps> = (props) => {
+const Alert = React.forwardRef<AlertRef, AlertProps>((props, ref) => {
   const {
     description,
     prefixCls: customizePrefixCls,
@@ -120,6 +127,7 @@ const Alert: React.FC<AlertProps> = (props) => {
     closeText,
     closeIcon,
     action,
+    id,
     ...otherProps
   } = props;
 
@@ -130,7 +138,12 @@ const Alert: React.FC<AlertProps> = (props) => {
     warning.deprecated(!closeText, 'closeText', 'closable.closeIcon');
   }
 
-  const ref = React.useRef<HTMLDivElement>(null);
+  const internalRef = React.useRef<HTMLDivElement>(null);
+
+  React.useImperativeHandle(ref, () => ({
+    nativeElement: internalRef.current!,
+  }));
+
   const { getPrefixCls, direction, alert } = React.useContext(ConfigContext);
   const prefixCls = getPrefixCls('alert', customizePrefixCls);
 
@@ -222,9 +235,10 @@ const Alert: React.FC<AlertProps> = (props) => {
       onLeaveStart={(node) => ({ maxHeight: node.offsetHeight })}
       onLeaveEnd={afterClose}
     >
-      {({ className: motionClassName, style: motionStyle }) => (
+      {({ className: motionClassName, style: motionStyle }, setRef) => (
         <div
-          ref={ref}
+          id={id}
+          ref={composeRef(internalRef, setRef)}
           data-show={!closed}
           className={classNames(alertCls, motionClassName)}
           style={{ ...alert?.style, ...style, ...motionStyle }}
@@ -258,7 +272,7 @@ const Alert: React.FC<AlertProps> = (props) => {
       )}
     </CSSMotion>,
   );
-};
+});
 
 if (process.env.NODE_ENV !== 'production') {
   Alert.displayName = 'Alert';
